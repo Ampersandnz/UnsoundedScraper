@@ -9,7 +9,7 @@ from multiprocessing.pool import Pool
 
 def main():
     home = os.getcwd()
-    for i in range(1, 11):
+    for i in range(1, 2):
         download_dir = Path(os.getcwd() + "/Chapter " + str(i))
 
         if not download_dir.exists():
@@ -26,6 +26,10 @@ def main():
         # Might not actually help though.
         with Pool(12) as p:
             p.map(download_file, urls)
+
+        # Move downloaded files into a .cbr archive.
+        rar_name = ("\"Chapter " + str(i) + ".cbr\"")
+        os.system('rar m -m0 -msjpg ' + rar_name)
 
         os.chdir(home)
 
