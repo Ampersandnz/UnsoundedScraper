@@ -3,18 +3,11 @@ __author__ = 'Michael'
 
 import urllib.request
 import os
-from pathlib import Path
 from multiprocessing.pool import Pool
 
 
 def main():
-    home = os.getcwd()
-    for i in range(1, 2):
-        download_dir = Path(os.getcwd() + "/Chapter " + str(i))
-
-        if not download_dir.exists():
-            download_dir.mkdir()
-        os.chdir(download_dir.name)
+    for i in range(1, 11):
 
         urls = []
         for j in range(1, 150):
@@ -29,14 +22,11 @@ def main():
 
         # Move downloaded files into a .cbr archive.
         rar_name = ("\"Chapter " + str(i) + ".cbr\"")
-        os.system('rar m -m0 -msjpg ' + rar_name)
-
-        os.chdir(home)
+        os.system('rar m -m0 ' + rar_name + " *.jpg")
 
 
 def download_file(url):
     filename = url.split("/")[-1]
-    chapter = filename[2:4]
 
     try:
         urllib.request.urlretrieve(url, filename)
@@ -46,9 +36,6 @@ def download_file(url):
     if os.path.exists(filename):
         if os.path.getsize(filename) < 25 * 1024:
             os.remove(filename)
-            print("Page " + filename + " of chapter " + chapter + " does not exist, temp file removed.")
-        else:
-            print("Page " + filename + " of chapter " + chapter + " retrieved!")
 
 
 if __name__ == "__main__":
