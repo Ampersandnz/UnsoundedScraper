@@ -33,13 +33,19 @@ def main():
 def download_file(url):
     filename = url.split("/")[-1]
     chapter = filename[2:4]
-    urllib.request.urlretrieve(url, filename)
 
-    if os.path.getsize(filename) < 25 * 1024:
-        os.remove(filename)
-        print("Page " + filename + " of chapter " + chapter + " does not exist, temp file removed.")
-    else:
-        print("Page " + filename + " of chapter " + chapter + " retrieved!")
+    try:
+        urllib.request.urlretrieve(url, filename)
+    except:
+        pass
+
+    if os.path.exists(filename):
+        if os.path.getsize(filename) < 25 * 1024:
+            os.remove(filename)
+            print("Page " + filename + " of chapter " + chapter + " does not exist, temp file removed.")
+        else:
+            print("Page " + filename + " of chapter " + chapter + " retrieved!")
+
 
 if __name__ == "__main__":
     main()
