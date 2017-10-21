@@ -7,10 +7,10 @@ from multiprocessing.pool import Pool
 
 
 def main():
-    for i in range(1, 11):
+    for i in range(1, 15):
 
         urls = []
-        for j in range(1, 150):
+        for j in range(1, 200):
             url = str("http://www.casualvillain.com/Unsounded/comic/ch" + str(i).zfill(2) + "/pageart/ch" + str(i).zfill(2) + "_" + str(j).zfill(2) + ".jpg")
             urls.append(url)
 
@@ -28,10 +28,11 @@ def main():
 def download_file(url):
     filename = url.split("/")[-1]
 
-    try:
-        urllib.request.urlretrieve(url, filename)
-    except:
-        pass
+    if not os.path.exists(filename): # Don't re-download files that are still sitting there from last time we ran
+        try:
+            urllib.request.urlretrieve(url, filename)
+        except:
+            pass
 
     if os.path.exists(filename):
         if os.path.getsize(filename) < 25 * 1024:
